@@ -19,7 +19,7 @@ export async function callGemini(prompt) {
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 2048,
+        maxOutputTokens: 8192,
       },
     }),
   })
@@ -31,10 +31,15 @@ export async function callGemini(prompt) {
   }
 
   const data = await response.json()
-  const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text).join('') || ''
+  const candidate = data?.candidates?.[0]
+  const text = candidate?.content?.parts?.map((p) => p.text).join('') || ''
 
   if (!text) {
     throw new Error('The AI service returned an empty response. Please try again.')
+  }
+
+  if (candidate?.finishReason === 'MAX_TOKENS') {
+    console.warn('Gemini response was truncated at the token limit.')
   }
 
   return text.trim()

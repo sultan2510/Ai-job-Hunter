@@ -50,6 +50,35 @@ export default async function handler(req, res) {
 }
 
 async function extractPdfText(buffer) {
+  // pdfjs-dist expects a few browser globals (DOMMatrix, ImageData, Path2D) that
+  // don't exist in Node. Most simple PDFs don't hit that code path, but PDFs with
+  // gradients, patterns, or certain embedded fonts do — which crashed real-world
+  // resume uploads even though basic test PDFs worked fine. Polyfilling these
+  // globally before import makes extraction reliable regardless of PDF content.
+  if (typeof globalThis.DOMMatrix === 'undefined') {
+    const { default: DOMMatrix } = await import('dommatrix')
+    globalThis.DOMMatrix = DOMMatrix
+  }
+  if (typeof globalThis.ImageData === 'undefined') {
+    globalThis.ImageData = class ImageData {
+      constructor(data, width, height) {
+        this.data = data
+        this.width = width
+        this.height = height
+      }
+    }
+  }
+  if (typeof globalThis.Path2D === 'undefined') {
+    globalThis.Path2D = class Path2D {
+      constructor() {}
+      moveTo() {}
+      lineTo() {}
+      closePath() {}
+      rect() {}
+      bezierCurveTo() {}
+    }
+  }
+
   // Dynamic import + the legacy Node build: pdfjs-dist auto-detects the
   // non-browser environment and runs without an external worker file,
   // which avoids the packaging issues that broke pdf-parse in serverless.
