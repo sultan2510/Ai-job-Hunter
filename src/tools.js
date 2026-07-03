@@ -9,7 +9,7 @@ export const tools = [
       'Paste your resume and (optionally) a target role. Get a rewritten, ATS-friendly version plus a list of concrete fixes.',
     endpoint: '/api/resume-optimize',
     fields: [
-      { name: 'resume', label: 'Your resume (paste as text)', type: 'textarea', placeholder: 'Paste your full resume text here...', required: true, rows: 10 },
+      { name: 'resume', label: 'Your resume (paste text or upload a file)', type: 'textarea', placeholder: 'Paste your full resume text here, or upload a PDF/DOCX below...', required: true, rows: 10, allowUpload: true },
       { name: 'targetRole', label: 'Target role (optional)', type: 'text', placeholder: 'e.g. Senior Product Designer' },
     ],
   },
@@ -49,7 +49,7 @@ export const tools = [
       'Paste your resume and a job description. Get a match score, gap analysis, and what to emphasize in your application.',
     endpoint: '/api/job-match',
     fields: [
-      { name: 'resume', label: 'Your resume', type: 'textarea', placeholder: 'Paste your resume text...', required: true, rows: 8 },
+      { name: 'resume', label: 'Your resume (paste text or upload a file)', type: 'textarea', placeholder: 'Paste your resume text, or upload a PDF/DOCX below...', required: true, rows: 8, allowUpload: true },
       { name: 'jobDescription', label: 'Job description', type: 'textarea', placeholder: 'Paste the job posting text...', required: true, rows: 8 },
     ],
   },
@@ -63,7 +63,7 @@ export const tools = [
       'Paste your resume and the job description. Get a tailored cover letter draft you can edit and send.',
     endpoint: '/api/cover-letter',
     fields: [
-      { name: 'resume', label: 'Your resume', type: 'textarea', placeholder: 'Paste your resume text...', required: true, rows: 8 },
+      { name: 'resume', label: 'Your resume (paste text or upload a file)', type: 'textarea', placeholder: 'Paste your resume text, or upload a PDF/DOCX below...', required: true, rows: 8, allowUpload: true },
       { name: 'jobDescription', label: 'Job description', type: 'textarea', placeholder: 'Paste the job posting text...', required: true, rows: 8 },
       { name: 'tone', label: 'Tone (optional)', type: 'text', placeholder: 'e.g. warm and direct, formal, enthusiastic' },
     ],
@@ -79,7 +79,7 @@ export const tools = [
     endpoint: '/api/interview-prep',
     fields: [
       { name: 'jobDescription', label: 'Job description', type: 'textarea', placeholder: 'Paste the job posting text...', required: true, rows: 8 },
-      { name: 'resume', label: 'Your resume (optional, sharpens answers)', type: 'textarea', placeholder: 'Paste your resume text...', rows: 8 },
+      { name: 'resume', label: 'Your resume (optional, sharpens answers — paste text or upload a file)', type: 'textarea', placeholder: 'Paste your resume text, or upload a PDF/DOCX below...', rows: 8, allowUpload: true },
     ],
   },
 ]
